@@ -1,0 +1,5 @@
+<svg #chartSvg xmlns="http://www.w3.org/2000/svg" [attr.viewBox]="viewBox$ | async" [attr.width]="width" [attr.height]="height">
+  <g #mainGroup class="main-group">
+    <ng-content></ng-content>
+  </g>
+</svg>
