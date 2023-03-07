@@ -1,13 +1,12 @@
 <app-chart-container
-  (click)="generateRandomData()"
+  (click)="getData()"
   [width]="this.width"
   [height]="this.height"
 >
   <svg:g app-left-axis [scale]="scaleLinear"></svg:g>
   <svg:g app-bottom-axis [scale]="scaleBand"></svg:g>
-  <svg:g app-basic-line [line]="lineGenerator" [data]="data"></svg:g>
   <svg:g
-    app-line-markers
+    app-basic-bar
     [data]="data"
     [scaleX]="scaleBand"
     [scaleY]="scaleLinear"

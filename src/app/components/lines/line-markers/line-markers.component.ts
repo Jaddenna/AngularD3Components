@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, NgZone, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 import { BaseChartComponent } from 'src/app/base/base-chart/base-chart.component';
-import { LineChartData } from 'src/app/line-chart/line-chart-data';
+import { LineChartData } from 'src/app/components/charts/line-chart/line-chart-data';
 import { ChartService } from 'src/app/services/chart.service';
 
 @Component({
@@ -51,14 +51,14 @@ export class LineMarkersComponent<xType, yType> extends BaseChartComponent {
   }
 
   draw() {
-    if (this._data?.data === undefined) {
+    if (this._data === undefined) {
       return;
     }
 
     d3.select(this.elRef.nativeElement)
       .attr('class', 'app-line-marker')
       .selectAll('circle.line-marker')
-      .data(this._data?.data)
+      .data(this._data)
       .join('circle')
       .attr('class', 'line-marker')
       .transition()

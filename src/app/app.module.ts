@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChartContainerComponent } from './chart-container/chart-container.component';
-import { LineChartComponent } from './line-chart/line-chart.component';
+import { LineChartComponent } from './components/charts/line-chart/line-chart.component';
 import { BaseAxisComponent } from './components/axes/base-axis/base-axis.component';
 import { LeftAxisComponent } from './components/axes/left-axis/left-axis.component';
 import { BottomAxisComponent } from './components/axes/bottom-axis/bottom-axis.component';
@@ -13,6 +13,8 @@ import { RightAxisComponent } from './components/axes/right-axis/right-axis.comp
 import { BasicLineComponent } from './components/lines/basic-line/basic-line.component';
 import { LineMarkersComponent } from './components/lines/line-markers/line-markers.component';
 import { BaseChartComponent } from './base/base-chart/base-chart.component';
+import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
+import { BasicBarComponent } from './components/bars/basic-bar/basic-bar.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { BaseChartComponent } from './base/base-chart/base-chart.component';
     RightAxisComponent,
     BasicLineComponent,
     LineMarkersComponent,
+    BarChartComponent,
+    BasicBarComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
