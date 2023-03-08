@@ -2,7 +2,9 @@ import { Component, ElementRef, Input, NgZone } from '@angular/core';
 import { BaseChartComponent } from 'src/app/base/base-chart/base-chart.component';
 import { ChartService } from 'src/app/services/chart.service';
 import * as d3 from 'd3';
-import { LineChartData } from '../../charts/line-chart/line-chart-data';
+import { BarChartData } from '../../charts/bar-chart/bar-chart-data';
+import { Scales } from 'src/app/utilities/scales';
+import { NumberValue } from 'd3';
 
 @Component({
   selector: '[app-basic-bar]',
@@ -13,36 +15,9 @@ export class BasicBarComponent<
   xType extends { toString(): string },
   yType extends d3.NumberValue
 > extends BaseChartComponent {
-  _scaleX?: d3.ScaleBand<xType>;
-  _scaleY?: d3.ScaleLinear<yType, number, never>;
-  _data?: LineChartData<xType, yType>;
-
-  @Input()
-  get scaleX() {
-    return this._scaleX;
-  }
-
-  set scaleX(value: any) {
-    this._scaleX = value;
-  }
-
-  @Input()
-  get scaleY() {
-    return this._scaleY;
-  }
-
-  set scaleY(value: any) {
-    this._scaleY = value;
-  }
-
-  @Input()
-  get data() {
-    return this._data;
-  }
-
-  set data(value: any) {
-    this._data = value;
-  }
+  @Input() scaleX?: d3.ScaleBand<xType>;
+  @Input() scaleY?: d3.ScaleLinear<yType, yType, never>;
+  @Input() data?: BarChartData<xType, yType>;
 
   constructor(
     private elRef: ElementRef,
@@ -53,26 +28,51 @@ export class BasicBarComponent<
   }
 
   draw(): void {
-    if (this._data === undefined || this._scaleX === undefined) {
+    if (this.data === undefined) {
       return;
     }
 
-    const range = d3.max(this._scaleY?.range()!)!;
+    if (this.scaleX === undefined) {
+      this.scaleX = Scales.getBandScale(
+        this.data.map((d) => d.x),
+        [0, this.chartService.canvasSize.width]
+      );
+    }
+
+    if (this.scaleY === undefined) {
+      const extend = d3.extent(this.data.map((d) => d.y));
+      this.scaleY = Scales.getLinearScale<yType, yType, never>(
+        [extend[0] || 0, extend[1] || 1],
+        [
+          this.chartService.canvasSize.width as any,
+          this.chartService.canvasSize.height as any,
+        ]
+      );
+    }
+
+    if (this.data.padding !== undefined) {
+      this.scaleX.padding(this.data.padding);
+    }
+
+    const range = d3.max(this.scaleY?.range()!)!;
 
     d3.select(this.elRef.nativeElement)
       .selectAll('rect.bar')
-      .data(this._data!)
+      .data(this.data!)
       .join('rect')
       .attr('class', 'bar')
-      .attr('x', (d) => (this._scaleX ? this._scaleX(d.x) || 0 : 0))
-      .attr('width', this._scaleX.bandwidth())
+      .attr('x', (d) => (this.scaleX ? this.scaleX(d.x) || 0 : 0))
+      .attr('width', this.scaleX.bandwidth())
       .transition()
       .ease(d3.easeExp)
       .duration(500)
-      .attr('height', (d) => (this._scaleY ? this._scaleY(d.y) || 0 : 0))
+      .attr('height', (d) =>
+        this.scaleY !== undefined ? <number>this.scaleY(d.y) : 0
+      )
       .attr(
         'y',
-        (d) => (range as number) - (this._scaleY ? this._scaleY(d.y) || 0 : 0)
+        (d) =>
+          (range as number) - (this.scaleY ? <number>this.scaleY(d.y) || 0 : 0)
       )
       .attr('fill', 'red')
       .end()

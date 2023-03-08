@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NumberValue } from 'd3';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ChartData } from '../interfaces/chart-data';
 
@@ -16,15 +17,18 @@ export class ChartService {
   public readonly childRendered$: Observable<number> =
     this.childRendered$$.asObservable();
 
-  private _canvasSize: { width: number; height: number } = {
+  private _canvasSize: { width: NumberValue; height: NumberValue } = {
     width: 600,
     height: 400,
   };
-  private canvasSize$$ = new BehaviorSubject<{ width: number; height: number }>(
-    this._canvasSize
-  );
-  public readonly canvasSize$: Observable<{ width: number; height: number }> =
-    this.canvasSize$$.asObservable();
+  private canvasSize$$ = new BehaviorSubject<{
+    width: NumberValue;
+    height: NumberValue;
+  }>(this._canvasSize);
+  public readonly canvasSize$: Observable<{
+    width: NumberValue;
+    height: NumberValue;
+  }> = this.canvasSize$$.asObservable();
 
   private _data: ChartData[] = [];
   public get data() {
@@ -39,7 +43,7 @@ export class ChartService {
     return this._canvasSize;
   }
 
-  public set canvasSize(value: { width: number; height: number }) {
+  public set canvasSize(value: { width: NumberValue; height: NumberValue }) {
     this._canvasSize = value;
     this.canvasSize$$.next(this._canvasSize);
   }

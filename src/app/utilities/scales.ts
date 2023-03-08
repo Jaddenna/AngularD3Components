@@ -1,11 +1,15 @@
 import * as d3 from 'd3';
+import { NumberValue } from 'd3';
 
 export class Scales {
-  public static getLinearScale(
-    extend: [number, number],
-    range: [number, number]
+  public static getLinearScale<TIn extends NumberValue, TOut, TNever>(
+    extend: [NumberValue, NumberValue],
+    range: [TIn, TIn]
   ) {
-    return d3.scaleLinear().domain([extend[1], extend[0]]).range(range);
+    return d3
+      .scaleLinear<TIn, TOut, TNever>()
+      .domain([extend[0], extend[1]])
+      .range(range);
   }
 
   public static getPointScale(domain: string[], range: [number, number]) {
@@ -25,7 +29,10 @@ export class Scales {
       .domain(['', ...domain, '']);
   }
 
-  public static getBandScale(domain: string[], range: [number, number]) {
-    return d3.scaleBand().range(range).domain(domain);
+  public static getBandScale<T extends { toString(): string }>(
+    domain: T[],
+    range: [NumberValue, NumberValue]
+  ) {
+    return d3.scaleBand<T>().range(range).domain(domain);
   }
 }
