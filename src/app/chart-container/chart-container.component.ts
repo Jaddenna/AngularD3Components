@@ -35,7 +35,7 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
   @Input() height: number = 300;
 
   viewBox$$: BehaviorSubject<string> = new BehaviorSubject<string>(
-    [0, 0, this.width, this.height].join(' ')
+    [-150, -150, this.width, this.height].join(' ')
   );
   viewBox$: Observable<string> = this.viewBox$$.asObservable();
 
@@ -69,7 +69,15 @@ export class ChartContainerComponent implements OnInit, OnDestroy {
     }
     const bBox = this.mainGroup.nativeElement.getBBox();
 
-    this.viewBox$$.next([bBox.x, bBox.y, bBox.width, bBox.height].join(' '));
+    const padding = 10;
+    this.viewBox$$.next(
+      [
+        bBox.x - padding,
+        bBox.y - padding,
+        bBox.width + padding * 2,
+        bBox.height + padding * 2,
+      ].join(' ')
+    );
     this.cdRef.detectChanges();
 
     this.chartService.clearRenderedChildren();

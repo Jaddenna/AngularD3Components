@@ -1,0 +1,7 @@
+<app-chart-container
+  (click)="getData()"
+  [width]="this.width"
+  [height]="this.height"
+>
+  <svg:g app-basic-pie [pie]="data"></svg:g>
+</app-chart-container>

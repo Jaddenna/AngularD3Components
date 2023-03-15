@@ -15,6 +15,8 @@ import { LineMarkersComponent } from './components/lines/line-markers/line-marke
 import { BaseChartComponent } from './base/base-chart/base-chart.component';
 import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
 import { BasicBarComponent } from './components/bars/basic-bar/basic-bar.component';
+import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
+import { BasicPieComponent } from './components/pies/basic-pie/basic-pie.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { BasicBarComponent } from './components/bars/basic-bar/basic-bar.compone
     LineMarkersComponent,
     BarChartComponent,
     BasicBarComponent,
+    PieChartComponent,
+    BasicPieComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
